@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Transparence des rémunérations – FO Énergie DIPDE</title>
+<style>
+  :root {
+    --fo-red: #D62B2B;
+    --fo-blue: #0057A8;
+    --fo-blue-dark: #003F7A;
+    --fo-blue-light: #E6F0FA;
+    --fo-red-light: #FDEAEA;
+    --fo-gray: #F4F4F4;
+    --fo-text: #1A1A1A;
+    --fo-text-muted: #555;
+    --fo-border: #DDE3EC;
+    --fo-teal: #0E8A6E;
+    --fo-teal-light: #E0F5EF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    color: var(--fo-text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--fo-blue);
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 2rem;
+  }
+  .logo-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-fo {
+    background: var(--fo-red);
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .logo-text {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    opacity: 0.9;
+  }
+  .logo-text strong { display: block; font-size: 1rem; font-weight: 700; }
+  nav { display: flex; gap: 0; }
+  nav a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 0.82rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+  nav a.active { background: var(--fo-red); color: white; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--fo-blue-dark) 0%, var(--fo-blue) 60%, #1a6fc4 100%);
+    color: white;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: rgba(214,43,43,0.15);
+  }
+  .badge-directive {
+    display: inline-block;
+    background: var(--fo-red);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    max-width: 780px;
+    margin: 0 auto 1rem;
+  }
+  .hero h1 span { color: #FFD166; }
+  .hero p {
+    font-size: 1.05rem;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+  .hero-cta {
+    display: inline-flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-primary {
+    background: var(--fo-red);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.8rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: #b52222; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.5);
+    padding: 0.72rem 1.8rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+  }
+  .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: white;
+    border-bottom: 3px solid var(--fo-red);
+    padding: 1.5rem 2rem;
+  }
+  .stats-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    text-align: center;
+  }
+  .stat-item { padding: 0.5rem; }
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--fo-blue);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--fo-text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-divider {
+    width: 1px;
+    background: var(--fo-border);
+    align-self: center;
+    height: 40px;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--fo-blue-dark);
+    margin-bottom: 0.4rem;
+  }
+  .section-sub {
+    color: var(--fo-text-muted);
+    font-size: 0.92rem;
+    margin-bottom: 2rem;
+  }
+  .section-rule {
+    width: 48px; height: 4px;
+    background: var(--fo-red);
+    border-radius: 2px;
+    margin: 0.6rem 0 2rem;
+  }
+
+  /* CARDS GRILLE */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--fo-border);
+    padding: 1.5rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .card:hover { box-shadow: 0 6px 24px rgba(0,87,168,0.1); transform: translateY(-2px); }
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .icon-blue { background: var(--fo-blue-light); }
+  .icon-red { background: var(--fo-red-light); }
+  .icon-teal { background: var(--fo-teal-light); }
+  .card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--fo-blue-dark);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .card p {
+    font-size: 0.88rem;
+    color: var(--fo-text-muted);
+    line-height: 1.6;
+  }
+  .card .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+  .tag-blue { background: var(--fo-blue-light); color: var(--fo-blue-dark); }
+  .tag-red { background: var(--fo-red-light); color: var(--fo-red); }
+  .tag-teal { background: var(--fo-teal-light); color: var(--fo-teal); }
+
+  /* CALENDRIER */
+  .timeline {
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--fo-border);
+    padding: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px; height: 100%;
+    background: var(--fo-blue);
+    border-radius: 4px 0 0 4px;
+  }
+  .timeline-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-step {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 1rem 1rem 1rem 0.5rem;
+    transition: background 0.15s;
+  }
+  .timeline-step:hover { background: var(--fo-gray); }
+  .timeline-step.active { background: var(--fo-blue-light); }
+  .step-year {
+    min-width: 70px;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--fo-blue);
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .step-year.red { color: var(--fo-red); }
+  .step-content { flex: 1; }
+  .step-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--fo-text);
+    margin-bottom: 4px;
+  }
+  .step-content p {
+    font-size: 0.85rem;
+    color: var(--fo-text-muted);
+    line-height: 1.5;
+  }
+  .step-badge {
+    background: var(--fo-blue);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+  .step-badge.red { background: var(--fo-red); }
+  .step-divider {
+    height: 1px;
+    background: var(--fo-border);
+    margin: 0 0.5rem;
+  }
+
+  /* ACCORDION */
+  .accordion { margin-bottom: 3rem; }
+  .acc-item {
+    background: white;
+    border: 1px solid var(--fo-border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .acc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.4rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--fo-blue-dark);
+    gap: 1rem;
+    transition: background 0.15s;
+  }
+  .acc-header:hover { background: var(--fo-gray); }
+  .acc-header .acc-icon { font-size: 1.1rem; color: var(--fo-text-muted); }
+  .acc-left { display: flex; align-items: center; gap: 12px; }
+  .acc-emoji { font-size: 1.2rem; }
+  .acc-arrow {
+    width: 20px; height: 20px;
+    transition: transform 0.25s;
+    color: var(--fo-text-muted);
+    flex-shrink: 0;
+  }
+  .acc-item.open .acc-arrow { transform: rotate(180deg); }
+  .acc-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s;
+    padding: 0 1.4rem;
+    font-size: 0.9rem;
+    color: var(--fo-text-muted);
+    line-height: 1.7;
+  }
+  .acc-item.open .acc-body {
+    max-height: 400px;
+    padding: 0 1.4rem 1.2rem;
+  }
+  .acc-body ul { margin: 0.5rem 0 0 1.2rem; }
+  .acc-body li { margin-bottom: 4px; }
+
+  /* QUIZ */
+  .quiz-section {
+    background: var(--fo-blue);
+    color: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .quiz-section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.4rem; }
+  .quiz-section p { opacity: 0.8; font-size: 0.9rem; margin-bottom: 1.8rem; }
+  .quiz-q {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    min-height: 48px;
+  }
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .quiz-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s, border-color 0.15s;
+    font-weight: 500;
+  }
+  .quiz-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.6); }
+  .quiz-btn.correct { background: rgba(14,138,110,0.5); border-color: #0E8A6E; }
+  .quiz-btn.wrong { background: rgba(214,43,43,0.4); border-color: var(--fo-red); }
+  .quiz-feedback {
+    font-size: 0.88rem;
+    min-height: 36px;
+    padding: 0.5rem 0;
+    opacity: 0.9;
+    font-style: italic;
+  }
+  .quiz-progress {
+    display: flex; gap: 6px; margin-bottom: 1.2rem;
+  }
+  .quiz-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    transition: background 0.2s;
+  }
+  .quiz-dot.done { background: white; }
+  .quiz-dot.correct-dot { background: #4CAF50; }
+  .quiz-dot.wrong-dot { background: var(--fo-red); }
+  .quiz-nav {
+    display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .quiz-next {
+    background: white;
+    color: var(--fo-blue);
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    transition: background 0.15s;
+  }
+  .quiz-next:hover { background: #e0e8f5; }
+  .quiz-score {
+    display: none;
+    text-align: center;
+    padding: 1rem;
+  }
+  .quiz-score .score-num {
+    font-size: 3rem;
+    font-weight: 900;
+    display: block;
+  }
+  .quiz-restart {
+    background: white;
+    color: var(--fo-blue);
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--fo-blue-dark);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.82rem;
+    margin-top: 2rem;
+  }
+  footer strong { color: white; }
+  footer .slogan {
+    font-style: italic;
+    color: var(--fo-red);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-top: 0.4rem;
+  }
+
+  @media (max-width: 640px) {
+    .quiz-options { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.7rem; }
+    nav { display: none; }
+    .stat-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-block">
+      <span class="logo-fo">FO</span>
+      <div class="logo-text">
+        <strong>Énergie DIPDE</strong>
+        Communiqué syndical
+      </div>
+    </div>
+    <nav>
+      <a href="#droits" class="active">Droits</a>
+      <a href="#calendrier">Calendrier</a>
+      <a href="#faq">FAQ</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="badge-directive">Directive Européenne 2023/970/UE</div>
+  <h1>Salaires transparents :<br><span>vos nouveaux droits</span></h1>
+  <p>Ce que la loi impose désormais à votre employeur. Connaissez vos droits, agissez avec FO.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="#droits">Découvrir mes droits</a>
+    <a class="btn-outline" href="#quiz">Tester mes connaissances</a>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num">2026</span>
+      <div class="stat-label">1re échéance légale</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">+150</span>
+      <div class="stat-label">Salariés concernés en 1er</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">5</span>
+      <div class="stat-label">Droits fondamentaux</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">27</span>
+      <div class="stat-label">États membres de l'UE concernés</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- DROITS -->
+  <section id="droits">
+    <h2 class="section-title">Vos 5 droits fondamentaux</h2>
+    <div class="section-rule"></div>
+    <div class="cards-grid">
+
+      <div class="card">
+        <div class="card-icon icon-blue">📅</div>
+        <span class="tag tag-blue">Calendrier</span>
+        <h3>Publication des écarts</h3>
+        <p>Les entreprises devront publier les écarts de rémunération femmes/hommes par catégorie de travailleurs, selon un calendrier progressif.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon icon-red">💶</div>
+        <span class="tag tag-red">Embauche</span>
+        <h3>Fourchette salariale avant entretien</h3>
+        <p>Tout candidat aura le droit de connaître la fourchette salariale du poste <strong>avant</strong> l'entretien d'embauche.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon icon-teal">📊</div>
+        <span class="tag tag-teal">Transparence</span>
+        <h3>Rapport obligatoire</h3>
+        <p>Les employeurs devront publier chaque année un rapport détaillé sur les écarts de rémunération par catégorie et par genre.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon icon-blue">🔍</div>
+        <span class="tag tag-blue">Information</span>
+        <h3>Droit de comparaison</h3>
+        <p>Chaque salarié pourra demander les informations sur sa rémunération et celles de ses collègues de même catégorie.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon icon-red">⚖️</div>
+        <span class="tag tag-red">Justice</span>
+        <h3>Charge de la preuve inversée</h3>
+        <p>En cas de litige, c'est à l'<strong>employeur</strong> de prouver l'absence de discrimination salariale — et non au salarié.</p>
+      </div>
+
+      <div class="card" style="border: 2px dashed var(--fo-border); background: var(--fo-gray); display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; gap: 0.5rem;">
+        <div style="font-size: 1.5rem;">🤝</div>
+        <p style="font-size: 0.85rem; color: var(--fo-text-muted);">Contactez vos représentants FO pour connaître vos droits spécifiques dans votre établissement.</p>
+        <span class="tag tag-blue" style="margin-top: 4px;">FO Énergie DIPDE</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CALENDRIER -->
+  <section id="calendrier">
+    <h2 class="section-title">Calendrier d'application</h2>
+    <p class="section-sub">Cliquez sur une étape pour en savoir plus</p>
+    <div class="section-rule"></div>
+    <div class="timeline">
+      <div class="timeline-steps">
+
+        <div class="timeline-step" onclick="toggleStep(this)">
+          <div class="step-year">2023</div>
+          <div class="step-content">
+            <h4>Adoption de la directive européenne</h4>
+            <p>La directive 2023/970/UE est publiée au Journal officiel de l'Union européenne.</p>
+          </div>
+          <div class="step-badge">Déjà acté</div>
+        </div>
+
+        <div class="step-divider"></div>
+
+        <div class="timeline-step" onclick="toggleStep(this)">
+          <div class="step-year">2026</div>
+          <div class="step-content">
+            <h4>Entreprises de plus de 150 salariés</h4>
+            <p>Publication obligatoire des écarts de rémunération entre femmes et hommes. Première grande échéance.</p>
+          </div>
+          <div class="step-badge red">⚡ Priorité</div>
+        </div>
+
+        <div class="step-divider"></div>
+
+        <div class="timeline-step" onclick="toggleStep(this)">
+          <div class="step-year">2027</div>
+          <div class="step-content">
+            <h4>Entreprises de plus de 100 salariés</h4>
+            <p>Extension des obligations aux entreprises de taille intermédiaire. Les mêmes exigences s'appliquent.</p>
+          </div>
+          <div class="step-badge">Prochain</div>
+        </div>
+
+        <div class="step-divider"></div>
+
+        <div class="timeline-step" onclick="toggleStep(this)">
+          <div class="step-year red">2031</div>
+          <div class="step-content">
+            <h4>Entreprises de plus de 50 salariés</h4>
+            <p>Généralisation à toutes les entreprises de plus de 50 salariés. Couverture quasi-totale du marché du travail.</p>
+          </div>
+          <div class="step-badge red">Futur</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ ACCORDION -->
+  <section id="faq">
+    <h2 class="section-title">Questions fréquentes</h2>
+    <div class="section-rule"></div>
+    <div class="accordion">
+
+      <div class="acc-item" onclick="toggleAcc(this)">
+        <div class="acc-header">
+          <div class="acc-left">
+            <span class="acc-emoji">❓</span>
+            Puis-je demander le salaire de mes collègues ?
+          </div>
+          <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="acc-body">
+          Oui. La directive vous donne le droit de demander à votre employeur des informations sur les niveaux de rémunération par catégorie de travailleurs, ventilés par genre. Vous pouvez connaître la fourchette de rémunération de votre catégorie et de celles comparables à la vôtre.
+        </div>
+      </div>
+
+      <div class="acc-item" onclick="toggleAcc(this)">
+        <div class="acc-header">
+          <div class="acc-left">
+            <span class="acc-emoji">📋</span>
+            Que doit publier mon employeur exactement ?
+          </div>
+          <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="acc-body">
+          <ul>
+            <li>L'écart de rémunération moyen entre femmes et hommes</li>
+            <li>L'écart de rémunération médian</li>
+            <li>La part de salariés femmes et hommes dans chaque quartile de rémunération</li>
+            <li>L'écart dans les rémunérations variables (primes, bonus…)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acc-item" onclick="toggleAcc(this)">
+        <div class="acc-header">
+          <div class="acc-left">
+            <span class="acc-emoji">⚖️</span>
+            Que se passe-t-il si mon employeur refuse de fournir ces informations ?
+          </div>
+          <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="acc-body">
+          Le refus de communication constitue une infraction. Des sanctions sont prévues. De plus, en cas de litige salarial, la charge de la preuve est inversée : c'est à l'employeur de démontrer qu'il n'y a pas de discrimination. Contactez FO pour être accompagné dans vos démarches.
+        </div>
+      </div>
+
+      <div class="acc-item" onclick="toggleAcc(this)">
+        <div class="acc-header">
+          <div class="acc-left">
+            <span class="acc-emoji">🔎</span>
+            Cette directive s'applique-t-elle aux candidats à l'embauche ?
+          </div>
+          <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="acc-body">
+          Oui, absolument. Tout candidat à un poste a le droit d'obtenir, avant l'entretien, la fourchette de rémunération ou le salaire de départ prévu pour le poste. Les offres d'emploi devront mentionner ces informations ou les fournir sur demande.
+        </div>
+      </div>
+
+      <div class="acc-item" onclick="toggleAcc(this)">
+        <div class="acc-header">
+          <div class="acc-left">
+            <span class="acc-emoji">🤝</span>
+            Quel rôle joue FO dans cette évolution ?
+          </div>
+          <svg class="acc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="acc-body">
+          FO Énergie DIPDE vous accompagne pour faire valoir ces nouveaux droits : négociation avec la direction, accompagnement individuel en cas de litige, formation de vos représentants. N'hésitez pas à prendre contact avec vos délégués syndicaux.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="quiz-section">
+      <h2>🧠 Testez vos connaissances</h2>
+      <p>5 questions pour vérifier que vous maîtrisez vos droits sur la transparence salariale.</p>
+
+      <div id="quiz-container">
+        <div class="quiz-progress" id="quiz-dots"></div>
+        <div class="quiz-q" id="quiz-question"></div>
+        <div class="quiz-options" id="quiz-options"></div>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+        <div class="quiz-nav">
+          <button class="quiz-next" id="quiz-next" onclick="nextQuestion()">Question suivante →</button>
+        </div>
+      </div>
+
+      <div class="quiz-score" id="quiz-score">
+        <span class="score-num" id="score-num"></span>
+        <p id="score-msg"></p>
+        <button class="quiz-restart" onclick="startQuiz()">Recommencer le quiz</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <strong>FO Énergie DIPDE</strong> — Communiqué syndical — Juin 2026<br>
+  <div class="slogan">Agir, ne pas subir !</div>
+</footer>
+
+<script>
+  const questions = [
+    {
+      q: "À partir de quelle date les entreprises de plus de 150 salariés doivent-elles publier leurs écarts de rémunération ?",
+      opts: ["2024", "2025", "2026", "2028"],
+      ans: 2,
+      exp: "✅ Correct ! Les entreprises de +150 salariés sont concernées dès 2026, première grande échéance de la directive."
+    },
+    {
+      q: "En cas de litige salarial, qui doit prouver l'absence de discrimination ?",
+      opts: ["Le salarié", "L'employeur", "L'inspection du travail", "Les deux parties"],
+      ans: 1,
+      exp: "✅ Exact ! La charge de la preuve est inversée : c'est à l'employeur de démontrer qu'il n'y a pas de discrimination."
+    },
+    {
+      q: "Un candidat à l'embauche peut-il connaître le salaire prévu avant l'entretien ?",
+      opts: ["Non, c'est confidentiel", "Oui, c'est un droit garanti par la directive", "Seulement après avoir signé le contrat", "Uniquement dans les grandes entreprises"],
+      ans: 1,
+      exp: "✅ Oui ! La directive garantit ce droit à tous les candidats, quelle que soit la taille de l'entreprise."
+    },
+    {
+      q: "Quelle directive européenne encadre la transparence des rémunérations ?",
+      opts: ["2021/1883/UE", "2022/450/UE", "2023/970/UE", "2024/1200/UE"],
+      ans: 2,
+      exp: "✅ C'est bien la directive 2023/970/UE, publiée en 2023 et en cours de transposition dans les États membres."
+    },
+    {
+      q: "À partir de combien de salariés une entreprise sera-t-elle concernée en 2031 ?",
+      opts: ["10 salariés", "50 salariés", "100 salariés", "250 salariés"],
+      ans: 1,
+      exp: "✅ Correct ! Dès 2031, toutes les entreprises de plus de 50 salariés seront soumises aux obligations de transparence."
+    }
+  ];
+
+  let current = 0, score = 0, answered = false;
+  const dots = [], results = [];
+
+  function startQuiz() {
+    current = 0; score = 0; answered = false;
+    dots.length = 0; results.length = 0;
+    document.getElementById('quiz-score').style.display = 'none';
+    document.getElementById('quiz-container').style.display = 'block';
+    renderDots();
+    renderQuestion();
+  }
+
+  function renderDots() {
+    const el = document.getElementById('quiz-dots');
+    el.innerHTML = '';
+    questions.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'quiz-dot' + (results[i] === true ? ' correct-dot' : results[i] === false ? ' wrong-dot' : i < current ? ' done' : '');
+      el.appendChild(d);
+    });
+  }
+
+  function renderQuestion() {
+    answered = false;
+    const q = questions[current];
+    document.getElementById('quiz-question').textContent = `Q${current+1}. ${q.q}`;
+    document.getElementById('quiz-feedback').textContent = '';
+    document.getElementById('quiz-next').style.display = 'none';
+    const opts = document.getElementById('quiz-options');
+    opts.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-btn';
+      btn.textContent = opt;
+      btn.onclick = () => answer(i, btn);
+      opts.appendChild(btn);
+    });
+    renderDots();
+  }
+
+  function answer(idx, btn) {
+    if (answered) return;
+    answered = true;
+    const q = questions[current];
+    const btns = document.querySelectorAll('.quiz-btn');
+    btns.forEach((b, i) => {
+      if (i === q.ans) b.classList.add('correct');
+      else if (i === idx && idx !== q.ans) b.classList.add('wrong');
+      b.style.pointerEvents = 'none';
+    });
+    const correct = idx === q.ans;
+    if (correct) score++;
+    results[current] = correct;
+    document.getElementById('quiz-feedback').textContent = q.exp;
+    document.getElementById('quiz-next').style.display = 'inline-block';
+    document.getElementById('quiz-next').textContent = current < questions.length - 1 ? 'Question suivante →' : 'Voir mon score →';
+    renderDots();
+  }
+
+  function nextQuestion() {
+    current++;
+    if (current >= questions.length) {
+      showScore();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showScore() {
+    document.getElementById('quiz-container').style.display = 'none';
+    const sc = document.getElementById('quiz-score');
+    sc.style.display = 'block';
+    document.getElementById('score-num').textContent = `${score} / ${questions.length}`;
+    const msgs = [
+      "Continuez à vous informer avec FO ! 💪",
+      "Pas mal ! Quelques points à revoir.",
+      "Bonne connaissance de vos droits ! 👍",
+      "Très bien ! Vous maîtrisez la directive.",
+      "Excellent ! Vous êtes un expert des droits salariaux ! 🏆"
+    ];
+    document.getElementById('score-msg').textContent = msgs[Math.min(score, msgs.length - 1)];
+  }
+
+  function toggleAcc(el) {
+    el.classList.toggle('open');
+  }
+
+  function toggleStep(el) {
+    el.classList.toggle('active');
+  }
+
+  startQuiz();
+</script>
+</body>
+</html>
